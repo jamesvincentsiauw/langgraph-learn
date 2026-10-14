@@ -19,6 +19,9 @@ def make_model(model: str | None = None, **kwargs) -> BaseChatModel:
     """Anthropic when ANTHROPIC_API_KEY is set, otherwise OpenRouter. MODEL overrides the id."""
     kwargs.setdefault("max_tokens", 2048)
     if os.getenv("ANTHROPIC_API_KEY"):
+        # A key that is not scoped to a workspace must name one on every request.
+        if workspace := os.getenv("ANTHROPIC_WORKSPACE_ID"):
+            kwargs.setdefault("default_headers", {})["anthropic-workspace-id"] = workspace
         return init_chat_model(
             model or os.getenv("MODEL", "claude-haiku-5-5"), model_provider="anthropic", **kwargs
         )
