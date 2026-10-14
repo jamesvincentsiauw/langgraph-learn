@@ -3,22 +3,28 @@
 create_agent builds the model/tools graph from lesson 1 for you. Compare the --graph output
 of both files: the nodes and edges match.
 
-Run: uv run 02_create_agent.py "your question"
+Run: uv run lessons/02_create_agent.py "your question"
 """
 
 import sys
 
 from langchain.agents import create_agent
+from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import HumanMessage
 
-from common import SYSTEM, TOOLS, make_model, print_updates
+from agentlab.config import DEFAULT_QUESTION, SYSTEM, make_model
+from agentlab.display import print_updates
+from agentlab.tools import TOOLS
 
-agent = create_agent(make_model(), tools=TOOLS, system_prompt=SYSTEM)
+
+def build(model: BaseChatModel | None = None):
+    return create_agent(model or make_model(), tools=TOOLS, system_prompt=SYSTEM)
 
 
 if __name__ == "__main__":
+    agent = build()
     if "--graph" in sys.argv:
         print(agent.get_graph().draw_mermaid())
         sys.exit()
-    question = " ".join(sys.argv[1:]) or "Ada lowongan engineer di Singapore yang nyebutin gaji? Rupiahin gajinya."
+    question = " ".join(sys.argv[1:]) or DEFAULT_QUESTION
     print_updates(agent.stream({"messages": [HumanMessage(question)]}, stream_mode="updates"))
