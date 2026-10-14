@@ -28,7 +28,9 @@ provider-native structured output, it asks for JSON directly (`ProviderStrategy`
 it registers the schema as a tool named after the class (`ToolStrategy`): the model "calls"
 `Answer(...)`, LangChain parses the arguments and adds a `ToolMessage` saying
 `Returning structured response: ...`. The sample run below took the tool route because the
-OpenRouter model id has no profile; the test scripts that same tool call by name.
+model profile that ships with `langchain-anthropic` lists `structured_output: False` for
+`claude-haiku-5-5` (check with `make_model().profile`); the same happens through OpenRouter,
+where the model id has no profile at all. The test scripts that same tool call by name.
 
 `agentlab/grounding.py` holds the check. `facts_from_messages()` rebuilds a `{key: row}` map
 from every `ToolMessage` whose content parses as JSON, and `check_grounding()` returns a list

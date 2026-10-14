@@ -61,9 +61,9 @@ Notes from building the lessons against langchain 1.4.5 and langgraph 1.2.15. Ea
 debugging round, so they are written down here and explained in the lesson that hit them.
 
 - `response_format` on `create_agent` picks a strategy by model: provider-native JSON when
-  the model profile advertises it, otherwise a tool named after the schema plus an extra
-  `ToolMessage`. Through OpenRouter the Anthropic model id matches neither list, so the
-  tool route runs. Lesson 3.
+  the model profile advertises `structured_output`, otherwise a tool named after the schema
+  plus an extra `ToolMessage`. The bundled profile for `claude-haiku-5-5` says `False`, so
+  the tool route runs both through `langchain-anthropic` and through OpenRouter. Lesson 3.
 - A node that calls `interrupt()` re-runs from its first line on resume, so resolve every
   gated call before running any tool. `HumanInTheLoopMiddleware` interrupts in its own
   `after_model` node, visible in `--graph`. Lesson 5.
