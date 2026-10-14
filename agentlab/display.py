@@ -7,6 +7,8 @@ def describe(msg: BaseMessage) -> str:
         return "; ".join(f"calls {c['name']}({c['args']})" for c in msg.tool_calls)
     if msg.type == "tool":
         return f"{msg.name} -> {str(msg.content)[:160]}"
+    if msg.type == "remove":
+        return "removes earlier messages"
     return f"answer:\n{msg.text}"
 
 

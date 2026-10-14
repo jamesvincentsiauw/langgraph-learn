@@ -55,4 +55,24 @@ def save_to_shortlist(key: str, note: str) -> str:
     return f"Saved {key} to the shortlist ({len(entries)} entries)."
 
 
+@tool
+def monthly_salary(amount: float, currency: str, period: str) -> str:
+    """Express a salary figure per month. Gross only, no tax or deduction estimate.
+
+    Args:
+        amount: the figure as stated in the opening.
+        currency: ISO code such as SGD, JPY, USD.
+        period: "year" or "month" as stated in the opening. Other periods are not converted.
+    """
+    period = period.lower().rstrip("s")
+    if period == "year":
+        monthly = amount / 12
+    elif period == "month":
+        monthly = amount
+    else:
+        return f"Cannot convert a per-{period} figure without assuming hours; ask for a yearly one."
+    cur = currency.upper()
+    return f"{amount:,.0f} {cur} per {period} = {monthly:,.0f} {cur} per month (gross)"
+
+
 TOOLS = [search_openings, get_opening_details, convert_to_idr]

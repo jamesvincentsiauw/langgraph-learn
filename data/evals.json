@@ -1,0 +1,79 @@
+[
+  {
+    "name": "sg_engineer",
+    "question": "Ada lowongan engineer di Singapore?",
+    "checks": [
+      {"check": "called_tool", "name": "search_openings", "args": {"market": "SG"}},
+      {"check": "mentions_returned_company"},
+      {"check": "final_is_text"}
+    ]
+  },
+  {
+    "name": "sg_salary_to_idr",
+    "question": "Lowongan engineer di SG yang nyebutin gaji, rupiahin gaji minimumnya satu aja.",
+    "checks": [
+      {"check": "called_tool", "name": "search_openings", "args": {"market": "SG"}},
+      {"check": "called_tool", "name": "convert_to_idr", "args": {"currency": "SGD"}},
+      {"check": "mentions_returned_company"},
+      {"check": "final_is_text"}
+    ]
+  },
+  {
+    "name": "jp_robotics_no_salary",
+    "question": "Ada lowongan robotics di Jepang? Gajinya berapa?",
+    "checks": [
+      {"check": "called_tool", "name": "search_openings", "args": {"market": "JP"}},
+      {"check": "mentions_returned_company"},
+      {"check": "no_salary_unless_returned"},
+      {"check": "final_is_text"}
+    ]
+  },
+  {
+    "name": "nz_mobile",
+    "question": "Lowongan mobile engineer di New Zealand ada gak?",
+    "checks": [
+      {"check": "called_tool", "name": "search_openings", "args": {"market": "NZ"}},
+      {"check": "mentions_returned_company"},
+      {"check": "no_salary_unless_returned"},
+      {"check": "final_is_text"}
+    ]
+  },
+  {
+    "name": "golang_remote",
+    "question": "Ada lowongan golang remote?",
+    "checks": [
+      {"check": "called_tool", "name": "search_openings", "args": {"keyword": "golang"}},
+      {"check": "mentions_returned_company"},
+      {"check": "final_is_text"}
+    ]
+  },
+  {
+    "name": "plain_conversion",
+    "question": "Gaji 200000 SGD setahun itu berapa rupiah?",
+    "checks": [
+      {"check": "called_tool", "name": "convert_to_idr", "args": {"amount": 200000, "currency": "SGD"}},
+      {"check": "not_called_tool", "name": "search_openings"},
+      {"check": "answer_mentions", "text": "Rp"},
+      {"check": "final_is_text"}
+    ]
+  },
+  {
+    "name": "sg_no_match",
+    "question": "Ada lowongan data scientist di Singapore?",
+    "checks": [
+      {"check": "called_tool", "name": "search_openings", "args": {"market": "SG"}},
+      {"check": "no_salary_unless_returned"},
+      {"check": "final_is_text"}
+    ]
+  },
+  {
+    "name": "sg_ios_salary",
+    "question": "Lowongan iOS di Singapore gajinya berapa? Rupiahin dong.",
+    "checks": [
+      {"check": "called_tool", "name": "search_openings", "args": {"market": "SG"}},
+      {"check": "called_tool", "name": "convert_to_idr", "args": {"currency": "SGD"}},
+      {"check": "mentions_returned_company"},
+      {"check": "final_is_text"}
+    ]
+  }
+]

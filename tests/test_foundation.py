@@ -28,3 +28,10 @@ def test_scripted_model_runs_in_order():
     first = model.bind_tools([search_openings]).invoke([HumanMessage("hi")])
     assert first.tool_calls[0]["name"] == "search_openings"
     assert model.invoke([HumanMessage("hi")]).content == "done"
+
+
+def test_scripted_model_streams_text_and_tool_calls():
+    model = ScriptedChatModel([tool_call("search_openings", {"keyword": "go"}), "dua kata"])
+    call_chunks = list(model.stream([HumanMessage("hi")]))
+    assert len(call_chunks) == 1 and call_chunks[0].tool_calls[0]["name"] == "search_openings"
+    assert [c.content for c in model.stream([HumanMessage("hi")])] == ["dua", " ", "kata"]
